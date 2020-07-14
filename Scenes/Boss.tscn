@@ -1,0 +1,99 @@
+[gd_scene load_steps=38 format=2]
+
+[ext_resource path="res://Scripts/AI/Boss.cs" type="Script" id=1]
+[ext_resource path="res://Sprites/Enemies/BossWalking_0.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Enemies/BossWalking_1.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/Enemies/BossFlame_04.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/Enemies/BossFlame_20.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/Enemies/BossFlame_18.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/Enemies/BossFlame_25.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/Enemies/BossFlame_21.png" type="Texture" id=8]
+[ext_resource path="res://Sprites/Enemies/BossFlame_23.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/Enemies/BossFlame_24.png" type="Texture" id=10]
+[ext_resource path="res://Sprites/Enemies/BossFlame_22.png" type="Texture" id=11]
+[ext_resource path="res://Sprites/Enemies/BossFlame_19.png" type="Texture" id=12]
+[ext_resource path="res://Sprites/Enemies/BossFlame_02.png" type="Texture" id=13]
+[ext_resource path="res://Sprites/Enemies/BossFlame_00.png" type="Texture" id=14]
+[ext_resource path="res://Sprites/Enemies/BossFlame_01.png" type="Texture" id=15]
+[ext_resource path="res://Sprites/Enemies/BossFlame_17.png" type="Texture" id=16]
+[ext_resource path="res://Sprites/Enemies/BossFlame_06.png" type="Texture" id=17]
+[ext_resource path="res://Sprites/Enemies/BossFlame_08.png" type="Texture" id=18]
+[ext_resource path="res://Sprites/Enemies/BossFlame_10.png" type="Texture" id=19]
+[ext_resource path="res://Sprites/Enemies/BossFlame_14.png" type="Texture" id=20]
+[ext_resource path="res://Sprites/Enemies/BossFlame_15.png" type="Texture" id=21]
+[ext_resource path="res://Sprites/Enemies/BossFlame_12.png" type="Texture" id=22]
+[ext_resource path="res://Sprites/Enemies/BossFlame_05.png" type="Texture" id=23]
+[ext_resource path="res://Sprites/Enemies/BossFlame_16.png" type="Texture" id=24]
+[ext_resource path="res://Sprites/Enemies/BossFlame_07.png" type="Texture" id=25]
+[ext_resource path="res://Sprites/Enemies/BossFlame_13.png" type="Texture" id=26]
+[ext_resource path="res://Sprites/Enemies/BossFlame_09.png" type="Texture" id=27]
+[ext_resource path="res://Sprites/Enemies/BossFlame_11.png" type="Texture" id=28]
+[ext_resource path="res://Sprites/Enemies/BossWalking_4.png" type="Texture" id=29]
+[ext_resource path="res://Sprites/Enemies/BossWalking_5.png" type="Texture" id=30]
+[ext_resource path="res://Sprites/Enemies/BossWalking_2.png" type="Texture" id=31]
+[ext_resource path="res://Sprites/Enemies/BossFlame_03.png" type="Texture" id=32]
+[ext_resource path="res://Sprites/Enemies/BossWalking_3.png" type="Texture" id=33]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 14 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 32 ), ExtResource( 4 ), ExtResource( 23 ), ExtResource( 17 ), ExtResource( 25 ), ExtResource( 18 ), ExtResource( 27 ), ExtResource( 19 ), ExtResource( 28 ), ExtResource( 22 ), ExtResource( 26 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 24 ), ExtResource( 16 ), ExtResource( 6 ), ExtResource( 12 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 11 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "Flamethrower",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 31 ), ExtResource( 33 ), ExtResource( 29 ), ExtResource( 30 ) ],
+"loop": true,
+"name": "Walking",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 31 ), ExtResource( 33 ), ExtResource( 29 ), ExtResource( 30 ) ],
+"loop": true,
+"name": "Dashing",
+"speed": 15.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 24, 32 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 72, 32 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 32, 32 )
+
+[node name="Boss" type="RigidBody2D"]
+mode = 1
+mass = 0.00102041
+script = ExtResource( 1 )
+
+[node name="BossAnim" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "Dashing"
+frame = 2
+playing = true
+
+[node name="BossShape" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="FlamethrowerArea" type="Area2D" parent="."]
+
+[node name="FlamethrowerShape" type="CollisionShape2D" parent="FlamethrowerArea"]
+position = Vector2( -48, 0 )
+shape = SubResource( 3 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="HitboxShape" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource( 4 )
+
+[node name="AttackDurationTimer" type="Timer" parent="."]
+wait_time = 4.0
+[connection signal="body_entered" from="FlamethrowerArea" to="." method="OnFlamethrowerBodyEntered"]
+[connection signal="area_entered" from="Hitbox" to="." method="OnHitboxAreaEntered"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnHitboxBodyEntered"]
+[connection signal="timeout" from="AttackDurationTimer" to="." method="OnAttackDurationTimerOut"]

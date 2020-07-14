@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Density__Time_-_MAZE_Level.wav-76239422355f955e9c080bd11f478651.sample"
+
+[deps]
+
+source_file="res://Sounds/Music/Density__Time_-_MAZE_Level.wav"
+dest_files=[ "res://.import/Density__Time_-_MAZE_Level.wav-76239422355f955e9c080bd11f478651.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

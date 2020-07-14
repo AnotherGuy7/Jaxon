@@ -1,0 +1,91 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Scripts/AI/Gunner.cs" type="Script" id=1]
+[ext_resource path="res://Sprites/Enemies/Gunner_1.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Enemies/Gunner_3.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/Enemies/Gunner_0.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/Enemies/Gunner_2.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/UI/EnemyHealth.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/UI/EnemyHealthBarOutline.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/Enemies/GunnerArm.png" type="Texture" id=8]
+[ext_resource path="res://Scenes/EnemyBullet.tscn" type="PackedScene" id=9]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "Walking",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 24 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 24, 32 )
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 144.0
+
+[node name="Gunner" type="RigidBody2D"]
+mode = 1
+mass = 0.00102041
+script = ExtResource( 1 )
+bulletToShoot = ExtResource( 9 )
+
+[node name="GunnerAnim" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "Idle"
+playing = true
+
+[node name="GunnerShape" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="HitboxShape" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource( 3 )
+
+[node name="HealthBar" type="TextureRect" parent="."]
+margin_left = -8.0
+margin_top = -35.0
+margin_right = 8.0
+margin_bottom = -29.0
+texture = ExtResource( 6 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthBarOutline" type="Sprite" parent="."]
+position = Vector2( 4.02618e-11, -32 )
+scale = Vector2( 1.06755, 0.986867 )
+texture = ExtResource( 7 )
+
+[node name="Gun" type="Sprite" parent="."]
+position = Vector2( 7.5, -4 )
+texture = ExtResource( 8 )
+
+[node name="GunBarrel" type="Position2D" parent="Gun"]
+position = Vector2( -6, 3 )
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource( 4 )
+
+[node name="IndividualShotTimer" type="Timer" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 3.0
+[connection signal="area_entered" from="Hitbox" to="." method="OnHitboxAreaEntered"]
+[connection signal="body_entered" from="Hitbox" to="." method="OnHitboxEntered"]
+[connection signal="body_entered" from="DetectionArea" to="." method="OnDetectionBodyEntered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="OnDetectionBodyExited"]
+[connection signal="timeout" from="IndividualShotTimer" to="." method="OnIndividualShotTimerOut"]
+[connection signal="timeout" from="ShootTimer" to="." method="OnShootTimerOut"]
